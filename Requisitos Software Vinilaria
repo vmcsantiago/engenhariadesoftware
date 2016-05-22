@@ -1,0 +1,57 @@
+Software para Vinilaria
+
+Objetivos do software:
+
+1) Fazer um “ranking” dos produtos para saber quais são mais vendidos para focar a produção;
+2) Fazer um controle de estoque da matéria-prima e avisar quando algum produto estiver acabando;
+3) Fazer um controle de estoque para saber os produtos disponíveis;
+
+Objetivo 1:
+O usuário deve inserir a venda de um produto sempre que esta for realizada para que o software contabilize as vendas e faça o ranking.
+O usuário deve poder ver o ranking sempre que quiser, e não apenas quando for inserir uma venda.
+
+Objetivo 2:
+O usuário deve inserir ou excluir produtos na lista de matéria-prima (inserir quando repor o material, e excluir quando utilizar).
+O software deve mostrar um aviso quando qualquer produto estiver acabando (quantidade mínima a ser estipulada pelo usuário).
+O usuário deve poder visualizar a lista de matéria-prima restante sempre que quiser.
+
+Objetivo 3:
+O usuário deve inserir os produtos que forem produzidos.
+O software deve excluir o produto ou decrementar a quantidade de produtos (quando um tipo de produto tiver mais de uma unidade) quando o usuário der saída nele no ‘objetivo 1’.
+O usuário deve poder visualizar a lista de produtos disponíveis sempre que quiser.
+
+
+- Lista de produtos (categorias) que são feitos pela Vinilaria:
+
+. Quadro Vinil (vários tipos, que devem ser contabilizados separadamente quando inseridos pelo usuário);
+. Relógio Vinil (vários tipos, que devem ser contabilizados separadamente quando inseridos pelo usuário);
+. Quadro K7 (vários tipos, que devem ser contabilizados separadamente quando inseridos pelo usuário);
+. Quadro VHS (vários tipos, que devem ser contabilizados separadamente quando inseridos pelo usuário);
+. Fruteira;
+. Porta treco;
+. Revisteiro;
+. Chaveiro;
+. Porta guardanapo;
+. Aparador de livros.
+
+
+- Lista de matéria-prima:
+
+. Vinil;
+. Máquina de relógio;
+. Tinta acrílica (várias cores, a serem inseridas pelo usuário);
+. Pincel;
+. VHS;
+. K7;
+. Cartolina;
+. Bloco A3 desenho;
+. Moldura VHS;
+. Moldura K7;
+. Acetato;
+. Cola madeira;
+. Cola isopor;
+. Fita dupla face;
+. Etiquetas;
+. Papel de seda preto;
+. Sacolas amarelas;
+. Triângulo fixa quadro.
