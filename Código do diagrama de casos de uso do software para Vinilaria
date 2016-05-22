@@ -1,0 +1,22 @@
+@startuml
+user -up-> (UC0)
+(Inserir venda) as (UC0)
+note top of (UC0)
+Adicionar cada venda ao ranking
+Retirar o produto do estoque ao realizar a venda
+end note
+user -down->(Visualizar ranking de vendas)
+user -right->(Inserir materia prima)
+user -right->(UC1)
+(Retirar materia prima) as (UC1)
+note top of (UC1)
+Exibir aviso quando materia prima chegar a uma quantidade pre definida
+end note
+user -right->(Visualizar lista de materia prima disponivel)
+user -up->(UC2)
+(Inserir produto finalizado) as (UC2)
+note top of (UC2)
+Adicionar produto ao estoque
+end note
+user -left->(Visualizar estoque)
+@enduml
