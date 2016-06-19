@@ -5,38 +5,99 @@ import sqlite3
 conn = sqlite3.connect('C:\sqlite\DB\esofdb.db')
 c = conn.cursor()
 
-def consulta_estoque():
-    resposta = input("Deseja pesquisar algum produto por nome ou codigo? (S/N): ")
+def listar_produtos():
+    jan = Tk()
+    jan.title("Lista de produtos")
+    jan.geometry("300x300+952+120")
+    lb = Label(jan, text="LISTA DE TODOS PRODUTOS CADASTRADOS")
+    lb.place(x=33, y=25)
+    lb2 = Label(jan, text="[ID][Nome Produto][Quantidade][Preço]")
+    lb2.place(x=15, y=70)
+    c.execute("SELECT * FROM produtos")
+    i = 0
+    scrollbar = Scrollbar(jan)
+    scrollbar.pack(side=RIGHT, fill=Y)
 
-    if(resposta == 'S'):
-        resposta2 = input("Deseja pesquisar por nome ou por codigo? (N/C): ")
-        if(resposta2 == 'N'):
-            resposta3 = input("Digite o nome do produto: ")
-            print(resposta3)
-            c.execute("SELECT id, nomeP, quantP, valorP FROM produtos WHERE nomeP = ?", (resposta3, ))
-            print("[ID][NOME PRODUTO][QUANTIDADE][PREÇO]")
-            for linha in c.fetchall():
-                print(linha)
-        else:
-            resposta3 = input("Digite o codigo do produto: ")
-            resposta3 = int(resposta3)
-            c.execute("SELECT * FROM produtos WHERE id = ?", (resposta3, ))
-            print("[ID][NOME PRODUTO][QUANTIDADE][PREÇO]")
-            for linha in c.fetchall():
-                print(linha)
-    else:
-        print("Lista de todos produtos cadastrados:")
-        print("[ID][NOME PRODUTO][QUANTIDADE][PREÇO]\n")
-        c.execute("SELECT * FROM produtos")
+    listbox = Listbox(jan, yscrollcommand=scrollbar.set)
+    for linha in c.fetchall():
+        listbox.insert(END, linha)
+    listbox.place(x=15, y=100)
+    scrollbar.config(command=listbox.yview)
 
-        for linha in c.fetchall():
-            print(linha)
+def calculo_nomep(jan, resposta3):
+    resposta3 = resposta3.get()
+    c.execute("SELECT id, nomeP, quantP, valorP FROM produtos WHERE nomeP = ?", (resposta3,))
+    lb = Label(jan, text="[ID][Nome produto][Quantidade][Preço]")
+    lb.place(x=20, y=130)
+    for linha in c.fetchall():
+        lb1 = Label(jan, text=linha)
+        lb1.place(x=20, y=150)
+    lb2 = Label(jan, text="Para pesquisar novamente,\n            feche a janela e abra-a novamente!")
+    lb2.place(x=10,y=190)
+    jan.mainloop()
 
+def pesquisar_nomep():
+    jan = Tk()
+    jan.title("Pesquisar produto pelo nome")
+    jan.geometry("300x250+952+120")
+    lb = Label(jan, text="Digite o nome do produto a ser pesquisado: ")
+    lb.place(x=15, y=25)
+    resposta3 = Entry(jan, width=37)
+    resposta3.place(x=20, y=50)
+    bt = Button(jan, width=25, text="Pesquisar", command=calculo_nomep)
+    bt.place(x=40, y=80)
+    bt["command"] = partial(calculo_nomep, jan, resposta3)
+
+def calculo_codigop(jan, resposta3):
+    resposta3 = resposta3.get()
+    c.execute("SELECT * FROM produtos WHERE id = ?", (resposta3,))
+    lb = Label(jan, text="[ID][Nome produto][Quantidade][Preço]")
+    lb.place(x=20, y=130)
+    for linha in c.fetchall():
+        lb1 = Label(jan, text=linha)
+        lb1.place(x=20, y=150)
+    lb2 = Label(jan, text="Para pesquisar novamente,\n            feche a janela e abra-a novamente!")
+    lb2.place(x=10, y=190)
+    jan.mainloop()
+
+def pesquisar_codigop():
+    jan = Tk()
+    jan.title("Pesquisar produto pelo codigo")
+    jan.geometry("300x250+952+120")
+    lb = Label(jan, text="Digite o codigo do produto a ser pesquisado: ")
+    lb.place(x=15, y=25)
+    resposta3 = Entry(jan, width=37)
+    resposta3.place(x=20, y=50)
+    bt = Button(jan, width=25, text="Pesquisar", command=calculo_codigop)
+    bt.place(x=40, y=80)
+    bt["command"] = partial(calculo_codigop, jan, resposta3)
+
+def consultar_caixa():
+    jan = Tk()
+    jan.title("Consultar valor monetário no caixa")
+    jan.geometry("290x90+952+120")
     c.execute("SELECT valorcaixa FROM caixa")
     total = c.fetchall()
     total = float(total[0][0])
+    lb = Label(jan, text="Valor monetário disponível no caixa: ")
+    lb.place(x=15, y=15)
+    lb2 = Label(jan, text=str(total) + " reais")
+    lb2.place(x=15, y=45)
+    jan.mainloop()
 
-    print("\nValor monetário disponível no caixa: %f" % total)
+def consulta_estoque():
+    jan = Tk()
+    jan.title("Abrir/Fechar Estoque")
+    jan.geometry("300x250+636+120")
+    bt = Button(jan, width=25, text="Mostrar a lista de produtos", command=listar_produtos)
+    bt.place(x=62, y=30)
+    bt1 = Button(jan, width=25, text="Pesquisar produto pelo nome", command=pesquisar_nomep)
+    bt1.place(x=62, y=90)
+    bt2 = Button(jan, width=25, text="Pesquisar produto pelo codigo", command=pesquisar_codigop)
+    bt2.place(x=62, y=150)
+    bt3= Button(jan, width=27, text="Consultar valor disponível no caixa", command=consultar_caixa)
+    bt3.place(x=62, y=210)
+    jan.mainloop()
 
 
 def bt_adicionar(idp, nomep, quantp, valorp, jan2):
@@ -66,7 +127,7 @@ def add_produto():
     lab3.place(x=15, y=115)
     quantp = Entry(jan2)
     quantp.place(x=330, y=115)
-    lab4 = Label(jan2, text="Digite o valor do produto: ")
+    lab4 = Label(jan2, text="Valor do produto (utilizar ponto em vez de vírgula): ")
     lab4.place(x=15, y=145)
     valorp = Entry(jan2)
     valorp.place(x=330, y=145)
@@ -106,60 +167,115 @@ def add_cliente():
     but.place(x=150, y=170)
     jan1.mainloop()
 
-def vender_produto():
-    idp = input('Digite o id do produto: ')
-    vendaq = input('Digite a quantidade do produto que foi vendida: ')
-    c.execute("SELECT quantP FROM produtos WHERE id = ?",(idp))
+def calculo_vender(idp, vendaq, jan):
+    idp = idp.get()
+    vendaq = vendaq.get()
+    c.execute("SELECT quantP FROM produtos WHERE id = ?", (idp))
     antigaq = c.fetchall()
     antigaq = int(antigaq[0][0])
     atualq = - int(vendaq) + antigaq
-    c.execute("UPDATE produtos SET quantP = ? WHERE id = ?",(atualq, idp))
+    c.execute("UPDATE produtos SET quantP = ? WHERE id = ?", (atualq, idp))
     c.execute("SELECT quantP FROM produtos WHERE id = ?", (idp))
     posq = c.fetchall()
     posq = int(posq[0][0])
-    print("A quantidade atual do produto é: %d." % posq)
+    lb = Label(jan, text="A quantidade atual do produto é:")
+    lb.place(x=15, y=150)
+    lb2 = Label(jan, text=posq)
+    lb2.place(x=205, y=150)
     c.execute("SELECT valorP FROM produtos WHERE id = ?", (idp))
     valor = c.fetchall()
     valor = float(valor[0][0])
-    valorcaixaadd = int(vendaq)*valor
-    print("O valor adicionado ao caixa foi de %f reais." % valorcaixaadd)
+    valorcaixaadd = int(vendaq) * valor
+    lb3 = Label(jan, text="O valor adicionado do caixa foi de: ")
+    lb3.place(x=15, y=175)
+    lb4 = Label(jan, text=str(valorcaixaadd) + " reais")
+    lb4.place(x=205, y=175)
     c.execute("SELECT valorcaixa FROM caixa")
     total = c.fetchall()
     total = float(total[0][0])
     total = total + valorcaixaadd
     c.execute("UPDATE caixa SET valorcaixa = ? WHERE id = ?", (total, 1))
-    print("Valor total do caixa é: %f" % total)
+    lb5 = Label(jan, text="Valor total do caixa: ")
+    lb5.place(x=15, y=200)
+    lb6 = Label(jan, text=str(total) + " reais")
+    lb6.place(x=205, y=200)
     conn.commit()
 
-def repor_produto():
-    idp = input('Digite o id do produto: ')
-    addq = input('Digite a quantidade a ser adicionada: ')
-    c.execute("SELECT quantP FROM produtos WHERE id = ?",(idp))
+def vender_produto():
+    jan = Tk()
+    jan.title("Venda de produtos")
+    jan.geometry("500x230+636+120")
+    lb = Label(jan, text="Digite o id do produto: ")
+    lb.place(x=15, y=55)
+    lb2 = Label(jan, text="Digite a quantidade do produto que foi vendida: ")
+    lb2.place(x=15, y=85)
+    idp = Entry(jan)
+    idp.place(x=290, y=55)
+    vendaq = Entry(jan)
+    vendaq.place(x=290, y=85)
+    bt = Button(jan, width=25, text="Vender")
+    bt.place(x=150, y=120)
+    bt["command"] = partial(calculo_vender, idp, vendaq, jan)
+    jan.mainloop()
+
+
+def calculo_repor(idp, addq, jan3):
+    idp = idp.get()
+    addq = addq.get()
+    c.execute("SELECT quantP FROM produtos WHERE id = ?", (idp))
     antigaq = c.fetchall()
     antigaq = int(antigaq[0][0])
     atualq = int(addq) + antigaq
-    c.execute("UPDATE produtos SET quantP = ? WHERE id = ?",(atualq, idp))
+    c.execute("UPDATE produtos SET quantP = ? WHERE id = ?", (atualq, idp))
     c.execute("SELECT quantP FROM produtos WHERE id = ?", (idp))
     posq = c.fetchall()
     posq = int(posq[0][0])
-    print("A quantidade atual do produto é: %d." % posq)
+    lb = Label(jan3, text="A quantidade atual do produto é:")
+    lb.place(x=15, y=150)
+    lb2 = Label(jan3, text=posq)
+    lb2.place(x=205, y=150)
     c.execute("SELECT valorP FROM produtos WHERE id = ?", (idp))
     valor = c.fetchall()
     valor = float(valor[0][0])
     valorcaixaret = int(addq) * valor
-    print("O valor retirado do caixa foi de %f reais." % valorcaixaret)
+    lb3 = Label(jan3, text="O valor retirado do caixa foi de: ")
+    lb3.place(x=15, y=175)
+    lb4 = Label(jan3, text=str(valorcaixaret) + " reais")
+    lb4.place(x=205, y=175)
     c.execute("SELECT valorcaixa FROM caixa")
     total = c.fetchall()
     total = float(total[0][0])
     total = total - valorcaixaret
     c.execute("UPDATE caixa SET valorcaixa = ? WHERE id = ?", (total, 1))
-    print("Valor total do caixa é: %f" % total)
+    lb5 = Label(jan3, text="Valor total do caixa: ")
+    lb5.place(x=15, y=200)
+    lb6 = Label(jan3, text=str(total) + " reais")
+    lb6.place(x=205, y=200)
     conn.commit()
 
+
+def repor_produto():
+    jan3 = Tk()
+    jan3.title("Reposição de produtos")
+    jan3.geometry("500x230+636+120")
+    lb = Label(jan3, text="Digite o id do produto: ")
+    lb.place(x=15, y=55)
+    lb2 = Label(jan3, text="Digite a quantidade a ser adicionada: ")
+    lb2.place(x=15, y=85)
+    idp = Entry(jan3)
+    idp.place(x=290, y=55)
+    addq = Entry(jan3)
+    addq.place(x=290, y=85)
+    bt = Button(jan3, width=25, text="Repor")
+    bt.place(x=150, y=120)
+    bt["command"] = partial(calculo_repor, idp, addq, jan3)
+    jan3.mainloop()
+
+
 janela = Tk()
-janela.title("Projeto Eng. Software v.1")
+janela.title("Controle de Estoque v.1.0")
 janela.geometry("220x250+400+120")
-lb = Label(janela, text="Menu de Controle")
+lb = Label(janela, text="MENU DE CONTROLE")
 lb.place(x=55, y=35)
 
 bt1 = Button(janela, width=25, text="Cadastrar Cliente/Fornecedor", command=add_cliente)
