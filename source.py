@@ -87,16 +87,14 @@ def consultar_caixa():
 
 def consulta_estoque():
     jan = Tk()
-    jan.title("Abrir/Fechar Estoque")
-    jan.geometry("300x250+636+120")
+    jan.title("Consultar Estoque")
+    jan.geometry("300x210+636+120")
     bt = Button(jan, width=25, text="Mostrar a lista de produtos", command=listar_produtos)
     bt.place(x=62, y=30)
     bt1 = Button(jan, width=25, text="Pesquisar produto pelo nome", command=pesquisar_nomep)
     bt1.place(x=62, y=90)
     bt2 = Button(jan, width=25, text="Pesquisar produto pelo codigo", command=pesquisar_codigop)
     bt2.place(x=62, y=150)
-    bt3= Button(jan, width=27, text="Consultar valor disponível no caixa", command=consultar_caixa)
-    bt3.place(x=62, y=210)
     jan.mainloop()
 
 
@@ -274,7 +272,7 @@ def repor_produto():
 
 janela = Tk()
 janela.title("Controle de Estoque v.1.0")
-janela.geometry("220x250+400+120")
+janela.geometry("220x270+400+120")
 lb = Label(janela, text="MENU DE CONTROLE")
 lb.place(x=55, y=35)
 
@@ -283,11 +281,13 @@ bt1.place(x=15, y=80)
 bt2 = Button(janela, width=25, text="Adicionar Produto", command=add_produto)
 bt2.place(x=15, y=110)
 bt3 = Button(janela, width=25, text="Repor Produto", command=repor_produto)
-bt3.place(x=15, y=140)
+bt3.place(x=15, y=170)
 bt4 = Button(janela, width=25, text="Vender Produto", command=vender_produto)
-bt4.place(x=15, y=170)
+bt4.place(x=15, y=140)
 bt5 = Button(janela, width=25, text="Abrir/Fechar Estoque", command=consulta_estoque)
 bt5.place(x=15, y=200)
+bt6= Button(janela, width=25, text="Valor disponível no caixa", command=consultar_caixa)
+bt6.place(x=15, y=230)
 
 janela.mainloop()
 
