@@ -75,7 +75,7 @@ def pesquisar_codigop():
 def consultar_caixa():
     jan = Tk()
     jan.title("Consultar valor monetário no caixa")
-    jan.geometry("290x90+952+120")
+    jan.geometry("290x90+636+120")
     c.execute("SELECT valorcaixa FROM caixa")
     total = c.fetchall()
     total = float(total[0][0])
